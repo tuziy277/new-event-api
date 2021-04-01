@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 router.use(express.urlencoded())
 
 // 引入数据库
-const conn = require('../util/sql.js')
+const conn = require('../../util/sql.js')
 
 // 用户注册接口
 router.post('/reguser', (req, res) => {

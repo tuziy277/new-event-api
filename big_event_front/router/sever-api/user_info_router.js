@@ -25,7 +25,7 @@ const storage = multer.diskStorage(
 
 
 // 连接sql
-const conn = require('../util/sql.js')
+const conn = require('../../util/sql.js')
 
 // 键值对解析到req.body
 router.use(express.urlencoded())

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 // 引入服务器
-const conn = require('../util/sql.js')
+const conn = require('../../util/sql.js')
 
 // 键值对解析到req.body
 router.use(express.urlencoded())
