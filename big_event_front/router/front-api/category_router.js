@@ -1,5 +1,6 @@
 
 const express = require('express')
+const sql = require('../../util/sql.js')
 
 const router = express.Router()
 
@@ -217,7 +218,61 @@ router.get('/get_comment', (req, res) => {
     })
 })
 
+// 文章搜索
+router.get('/search', (req, res) => {
+    let { key, type, page, perpage } = req.query;
+    let sqlStr = ``
 
+    // 总页数
+    let pages = '';
+    // 当前页数
+    page ? page : page = 0;
+
+
+    let countsql = `select count(*) as id from articles`
+    conn.query(countsql, (err, result) => {
+        if (err) console.log(err);
+
+        //console.log(result[0]);
+        // 总页数
+        pages = perpage ? Math.ceil(result[0].id / perpage) : Math.ceil(result[0].id / 6);
+
+        //console.log(pages);
+    })
+
+    // 查询页数 以及 页面
+    let limit = '';
+    perpage ? limit = page ? page * perpage - perpage + ',' + page * perpage : 0 + ',' + perpage : limit = page ? page * 6 - 6 + ',' + page * 6 : 0 + ',' + 6
+    console.log(limit);
+    if (key) {
+
+        sqlStr = `select * from articles where title like "%${key}%" limit ${limit}`
+        conn.query(sqlStr, (err, result) => {
+            if (err) console.log(err);
+
+            console.log(result);
+            res.json({
+                "pages": pages,
+                "page": +page,
+                "data": result
+            })
+        })
+    }
+    if (type) {
+        sqlStr = `select * from articles where categoryId=${type}`;
+        conn.query(sqlStr, (err, result) => {
+            if (err) console.log(err);
+
+            res.json({
+                "pages": pages,
+                "page": +page,
+                "data": result
+            })
+        })
+    }
+
+
+})
 
 
 
